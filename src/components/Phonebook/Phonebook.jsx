@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import s from './Phonebook.module.css';
 import { addContact } from '../../redux/Phonebook/phoonebook-actions';
 
-const Phonebook = ({ onSubmit }) => {
+const Phonebook = () => {
+  const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -23,7 +24,7 @@ const Phonebook = ({ onSubmit }) => {
   };
   const handleSubmit = e => {
     e.preventDefault();
-    onSubmit(name, number);
+    dispatch(addContact(name, number));
     reset();
   };
   const reset = () => {
@@ -67,9 +68,4 @@ const Phonebook = ({ onSubmit }) => {
     </div>
   );
 };
-
-const mapDispatchToProps = dispatch => ({
-  onSubmit: (name, number) => dispatch(addContact(name, number)),
-});
-
-export default connect(null, mapDispatchToProps)(Phonebook);
+export default Phonebook;

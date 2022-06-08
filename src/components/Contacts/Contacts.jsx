@@ -1,8 +1,14 @@
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import s from './Contacts.module.css';
 import { removeContact } from '../../redux/Phonebook/phoonebook-actions';
 
-const Contacts = ({ contacts, onRemoveContact }) => {
+const Contacts = () => {
+  const filter = useSelector(state => state.contacts.filter).toLowerCase();
+  const items = useSelector(state => state.contacts.items);
+  const contacts = items.filter(({ name }) =>
+    name.toLowerCase().includes(filter)
+  );
+  const dispatch = useDispatch();
   return (
     <div>
       {contacts.map(contact => {
@@ -14,7 +20,7 @@ const Contacts = ({ contacts, onRemoveContact }) => {
               name={contact.name}
               className={s.buttonDelete}
               type="button"
-              onClick={() => onRemoveContact(contact.id)}
+              onClick={() => dispatch(removeContact(contact.id))}
             >
               Delete
             </button>
@@ -24,16 +30,4 @@ const Contacts = ({ contacts, onRemoveContact }) => {
     </div>
   );
 };
-const mapStateToProps = state => {
-  const { filter, contacts } = state.contacts;
-  const normalizedFilter = filter.toLowerCase();
-  const visibleContacts = contacts.filter(({ name }) => {
-    return name.toLowerCase().includes(normalizedFilter);
-  });
-  return { contacts: visibleContacts };
-};
-const mapDispatchToProps = dispatch => ({
-  onRemoveContact: id => dispatch(removeContact(id)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Contacts);
+export default Contacts;
