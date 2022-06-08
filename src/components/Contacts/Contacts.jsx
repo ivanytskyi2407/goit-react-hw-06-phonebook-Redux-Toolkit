@@ -25,9 +25,9 @@ const Contacts = ({ contacts, onRemoveContact }) => {
   );
 };
 const mapStateToProps = state => {
-  const { filter, items } = state.contacts;
+  const { filter, contacts } = state.contacts;
   const normalizedFilter = filter.toLowerCase();
-  const visibleContacts = items.filter(({ name }) => {
+  const visibleContacts = contacts.filter(({ name }) => {
     return name.toLowerCase().includes(normalizedFilter);
   });
   return { contacts: visibleContacts };
